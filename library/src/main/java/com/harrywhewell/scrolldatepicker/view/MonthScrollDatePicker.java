@@ -2,6 +2,7 @@ package com.harrywhewell.scrolldatepicker.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.adapter.MonthScrollDatePickerAdapter;
+
+import org.joda.time.LocalDate;
 
 import java.util.Date;
 
@@ -75,7 +78,22 @@ public class MonthScrollDatePicker extends LinearLayout{
         setShowTitle(this.showTitle);
         setShowFullDate(this.showFullDate);
         setTextColor();
+        initRecyclerView();
+    }
 
+    /**
+     * set up Recycler view and its adapter
+     */
+    private void initRecyclerView(){
+        adapter = new MonthScrollDatePickerAdapter(selectedColor,
+                selectedTextColor,
+                baseColor,
+                baseTextColor,
+                getResources().getDrawable(R.drawable.bg_circle_drawable));
+        mMonthRecyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mMonthRecyclerView.setLayoutManager(layoutManager);
     }
 
     /**
@@ -116,6 +134,8 @@ public class MonthScrollDatePicker extends LinearLayout{
      * e.g. 00/01/2016
      */
     public Date getSelectedDate(){
+        LocalDate selectedLocalDate =  adapter.getDate();
+        return selectedLocalDate.toDate();
 
     }
 
@@ -125,7 +145,8 @@ public class MonthScrollDatePicker extends LinearLayout{
      * e.g. "00/01/2016"
      */
     public String getSelectedDateAsString(){
-
+        LocalDate selectedLocalDate =  adapter.getDate();
+        return selectedLocalDate.toString("dd/MM/yyyy");
     }
 
     /**
@@ -134,7 +155,8 @@ public class MonthScrollDatePicker extends LinearLayout{
      * @return selected month name as String
      */
     public String getSelectedMonthName(){
-
+        LocalDate selectedLocalDate =  adapter.getDate();
+        return selectedLocalDate.toString("MMMM");
     }
 
     /**
@@ -143,7 +165,8 @@ public class MonthScrollDatePicker extends LinearLayout{
      * @return selected month short name as String
      */
     public String getSelectedMonthNameShort(){
-
+        LocalDate selectedLocalDate =  adapter.getDate();
+        return selectedLocalDate.toString("MMM");
     }
 
     /**
@@ -152,7 +175,7 @@ public class MonthScrollDatePicker extends LinearLayout{
      * @param month start month
      */
     public void setStartMonth(int month){
-
+        adapter.setStartMonth(month);
     }
 
     /**
@@ -161,7 +184,7 @@ public class MonthScrollDatePicker extends LinearLayout{
      * @param year start year
      */
     public void setStartDate(int month, int year){
-
+        adapter.setStartDate(month, year);
     }
 
     /**
@@ -170,6 +193,6 @@ public class MonthScrollDatePicker extends LinearLayout{
      * @param year end year
      */
     public void setEndDate(int month, int year){
-
+        adapter.setEndDate(month, year);
     }
 }
