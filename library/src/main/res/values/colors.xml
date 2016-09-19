@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_selected">#686868</color>
+    <color name="default_selected_text">#FFFFFF</color>
+    <color name="default_base">#FFFFFF</color>
+    <color name="default_base_text">#000000</color>
+</resources>
