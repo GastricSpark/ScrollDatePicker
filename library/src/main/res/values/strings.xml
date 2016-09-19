@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ScrollDatePicker</string>
+    <string name="left_arrow">Left Arrow</string>
+    <string name="right_arrow">Right Arrow</string>
 </resources>

@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DayScrollDatePicker">
+    <declare-styleable name="ScrollDatePicker">
         <attr name="selectedColor" format="color"/>
         <attr name="selectedTextColor" format="color"/>
         <attr name="startDate" format="string"/>
-        <attr name="selectedDay" format="integer"/>
-        <attr name="showMonth" format="boolean"/>
+        <attr name="selectedItem" format="integer"/>
+        <attr name="showTitle" format="boolean"/>
         <attr name="showFullDate" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="MonthScrollDatePicker">
-        <attr name="selectedColor" format="color"/>
-        <attr name="selectedTextColor" format="color"/>
-        <attr name="startDate" format="string"/>
-        <attr name="selectedMonth" format="integer"/>
-        <attr name="showYear" format="boolean"/>
-        <attr name="showFullDate" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="TimeScrollDatePicker">
-        <attr name="selectedColor" format="color"/>
-        <attr name="selectedTextColor" format="color"/>
-        <attr name="startDate" format="string"/>
-        <attr name="selectedMonth" format="integer"/>
-        <attr name="showMonth" format="boolean"/>
-        <attr name="showFullDateTime" format="boolean" />
     </declare-styleable>
 </resources>
