@@ -177,6 +177,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      */
     public void setStartMonth(int month){
         adapter.setStartMonth(month);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -186,6 +187,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      */
     public void setStartDate(int month, int year){
         adapter.setStartDate(month, year);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -195,6 +197,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      */
     public void setEndDate(int month, int year){
         adapter.setEndDate(month, year);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

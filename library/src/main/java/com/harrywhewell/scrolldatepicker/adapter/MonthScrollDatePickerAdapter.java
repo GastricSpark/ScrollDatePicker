@@ -13,15 +13,14 @@ import android.widget.TextView;
 import com.harrywhewell.scrolldatepicker.R;
 
 import org.joda.time.LocalDate;
+import org.joda.time.Months;
 
 /**
  * Adapter to supply MonthScrollDatePicker with date data
  */
 public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScrollDatePickerAdapter.MonthScrollDatePickerViewHolder>{
 
-    private int selectedColor;
     private int selectedTextColor;
-    private int baseColor;
     private int baseTextColor;
 
     private Drawable background;
@@ -51,9 +50,7 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
 
     public MonthScrollDatePickerAdapter(Context context, int selectedColor, int selectedTextColor,
                                         int baseColor, int baseTextColor, MonthScrollDatePickerListener listener) {
-        this.selectedColor = selectedColor;
         this.selectedTextColor = selectedTextColor;
-        this.baseColor = baseColor;
         this.baseTextColor = baseTextColor;
         this.background = setDrawableBackgroundColor(context.getResources().getDrawable(R.drawable.bg_circle_drawable), baseColor);
         this.selectedBackground = setDrawableBackgroundColor(context.getResources().getDrawable(R.drawable.bg_circle_drawable), selectedColor);
@@ -73,7 +70,7 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
     }
 
     public void setEndDate(int month, int year){
-        this.endDate = endDate.withMonthOfYear(month).withYear(year);
+        this.endDate = startDate.withMonthOfYear(month).withYear(year);
     }
 
     public LocalDate getDate(){
@@ -118,19 +115,17 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
                 listener.onFullDateInteraction(startDate.plusMonths(holder.getAdapterPosition()));
             }
         });
-        if(holder.getAdapterPosition() < 12 && holder.getAdapterPosition() > 3){
-            listener.onYearInteraction(dateTime.plusYears(-1));
-        }else{
-            listener.onYearInteraction(dateTime);
-        }
-        Log.d("LOG", String.valueOf(holder.getAdapterPosition()));
-
-
+        listener.onYearInteraction(dateTime);
     }
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        if(endDate != null){
+            return Months.monthsBetween(startDate, endDate).getMonths() + 1;
+        }else{
+            return Integer.MAX_VALUE;
+        }
+
     }
 
     public interface MonthScrollDatePickerListener{
