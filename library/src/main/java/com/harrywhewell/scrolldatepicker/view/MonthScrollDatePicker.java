@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import java.util.Date;
  * Date picker which displays the months of the year in a horizontal list.
  * If no end date is set the date picker will continue to infinity.
  */
-public class MonthScrollDatePicker extends LinearLayout{
+public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDatePickerAdapter.MonthScrollDatePickerListener{
 
     private TextView mYearTextView;
     private TextView mFullDateTextView;
@@ -85,11 +86,11 @@ public class MonthScrollDatePicker extends LinearLayout{
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
-        adapter = new MonthScrollDatePickerAdapter(selectedColor,
+        adapter = new MonthScrollDatePickerAdapter(getContext(),
+                selectedColor,
                 selectedTextColor,
                 baseColor,
-                baseTextColor,
-                getResources().getDrawable(R.drawable.bg_circle_drawable));
+                baseTextColor, this);
         mMonthRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -194,5 +195,15 @@ public class MonthScrollDatePicker extends LinearLayout{
      */
     public void setEndDate(int month, int year){
         adapter.setEndDate(month, year);
+    }
+
+    @Override
+    public void onYearInteraction(LocalDate date) {
+        mYearTextView.setText(date.toString("yyyy"));
+    }
+
+    @Override
+    public void onFullDateInteraction(LocalDate date) {
+        mFullDateTextView.setText((date.toString("MMMM") + " " + date.toString("yyyy")));
     }
 }

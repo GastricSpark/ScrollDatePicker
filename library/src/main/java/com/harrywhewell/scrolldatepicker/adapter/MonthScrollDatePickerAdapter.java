@@ -1,8 +1,10 @@
 package com.harrywhewell.scrolldatepicker.adapter;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,16 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
     private int baseTextColor;
 
     private Drawable background;
+    private Drawable selectedBackground;
 
-    private LocalDate dateTime;
+    private LocalDate startDate;
     private LocalDate endDate;
 
+    private MonthScrollDatePickerListener listener;
+
     private TextView mSelectedView;
-    private LocalDate selectedDate;
+    private LocalDate dateTime;
+
 
     /**
      *  ViewHolder for month_list_item layout
@@ -43,23 +49,27 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
         }
     }
 
-    public MonthScrollDatePickerAdapter(int selectedColor, int selectedTextColor, int baseColor, int baseTextColor, Drawable background) {
+    public MonthScrollDatePickerAdapter(Context context, int selectedColor, int selectedTextColor,
+                                        int baseColor, int baseTextColor, MonthScrollDatePickerListener listener) {
         this.selectedColor = selectedColor;
         this.selectedTextColor = selectedTextColor;
         this.baseColor = baseColor;
         this.baseTextColor = baseTextColor;
-        this.background = background;
-
-        this.dateTime = new LocalDate();
+        this.background = setDrawableBackgroundColor(context.getResources().getDrawable(R.drawable.bg_circle_drawable), baseColor);
+        this.selectedBackground = setDrawableBackgroundColor(context.getResources().getDrawable(R.drawable.bg_circle_drawable), selectedColor);
+        this.listener = listener;
+        this.startDate = new LocalDate();
+        listener.onFullDateInteraction(startDate);
     }
 
-
     public void setStartDate(int month, int year){
-        this.dateTime = dateTime.withMonthOfYear(month).withYear(year);
+        this.startDate = startDate.withMonthOfYear(month).withYear(year);
+        listener.onFullDateInteraction(startDate);
     }
 
     public void setStartMonth(int month){
-        this.dateTime = dateTime.withMonthOfYear(month);
+        this.startDate = startDate.withMonthOfYear(month);
+        listener.onFullDateInteraction(startDate);
     }
 
     public void setEndDate(int month, int year){
@@ -67,7 +77,7 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
     }
 
     public LocalDate getDate(){
-        return selectedDate;
+        return dateTime;
     }
 
     private Drawable setDrawableBackgroundColor(Drawable drawable, int color){
@@ -76,9 +86,9 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
         return gradientDrawable;
     }
 
-    private void deselectView(){
-        mSelectedView.setTextColor(baseTextColor);
-        mSelectedView.setBackground(setDrawableBackgroundColor(background, baseColor));
+    private void handleView(boolean selected){
+        mSelectedView.setTextColor(selected ? selectedTextColor : baseTextColor);
+        mSelectedView.setBackground(selected ? selectedBackground : background);
     }
 
     @Override
@@ -91,28 +101,40 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
     }
 
     @Override
-    public void onBindViewHolder(final MonthScrollDatePickerViewHolder holder, int position) {
+    public void onBindViewHolder(final MonthScrollDatePickerViewHolder holder,int position) {
         holder.monthTextView.setTextColor(baseTextColor);
-        holder.monthTextView.setBackground(setDrawableBackgroundColor(background, baseColor));
+        holder.monthTextView.setBackground(background);
+        dateTime = startDate.plusMonths(position);
+        holder.monthTextView.setText(dateTime.toString("MMM"));
 
         holder.monthTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deselectView();
-                holder.monthTextView.setTextColor(selectedTextColor);
-                holder.monthTextView.setBackground(setDrawableBackgroundColor(background, selectedColor));
+                if(mSelectedView != null){
+                    handleView(false);
+                }
                 mSelectedView = holder.monthTextView;
-                selectedDate = dateTime;
+                handleView(true);
+                listener.onFullDateInteraction(startDate.plusMonths(holder.getAdapterPosition()));
             }
         });
-        this.dateTime = dateTime.plusMonths(position);
-        holder.monthTextView.setText(dateTime.toString("MMM"));
+        if(holder.getAdapterPosition() < 12 && holder.getAdapterPosition() > 3){
+            listener.onYearInteraction(dateTime.plusYears(-1));
+        }else{
+            listener.onYearInteraction(dateTime);
+        }
+        Log.d("LOG", String.valueOf(holder.getAdapterPosition()));
+
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return Integer.MAX_VALUE;
     }
 
-
+    public interface MonthScrollDatePickerListener{
+        void onYearInteraction(LocalDate date);
+        void onFullDateInteraction(LocalDate date);
+    }
 }

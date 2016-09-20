@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_marginBottom="5dp"
+    android:id="@+id/date_picker_scroll_month_parentView"
     android:layout_height="wrap_content">
     <TextView
         android:layout_marginTop="5dp"
@@ -19,24 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:contentDescription="@string/left_arrow"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_left_arrow_grey"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/date_picker_scroll_month_recycler_view"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             tools:listitem="@layout/month_list_item"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:contentDescription="@string/right_arrow"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_right_arrow_grey"/>
     </LinearLayout>
     <TextView
         android:layout_marginTop="5dp"
