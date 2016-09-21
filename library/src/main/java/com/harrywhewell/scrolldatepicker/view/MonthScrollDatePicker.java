@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +22,7 @@ import java.util.Date;
  * Date picker which displays the months of the year in a horizontal list.
  * If no end date is set the date picker will continue to infinity.
  */
-public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDatePickerAdapter.MonthScrollDatePickerListener{
+public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDatePickerAdapter.OnYearInteractionListener{
 
     private TextView mYearTextView;
     private TextView mFullDateTextView;
@@ -29,9 +30,6 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
 
     private MonthScrollDatePickerAdapter adapter;
 
-    private int selectedColor;
-    private int selectedTextColor;
-    private int baseColor;
     private int baseTextColor;
 
     private boolean showTitle;
@@ -61,9 +59,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      */
     private void setAttributeValues(TypedArray a){
         try{
-            selectedColor = a.getColor(R.styleable.ScrollDatePicker_selectedColor, getResources().getColor(R.color.default_selected));
-            selectedTextColor = a.getColor(R.styleable.ScrollDatePicker_selectedTextColor, getResources().getColor(R.color.default_selected_text));
-            baseColor = a.getColor(R.styleable.ScrollDatePicker_baseColor, getResources().getColor(R.color.default_base));
+            adapter = new MonthScrollDatePickerAdapter(getContext(), a, this);
             baseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor, getResources().getColor(R.color.default_base_text));
             showTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
             showFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
@@ -86,11 +82,6 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
-        adapter = new MonthScrollDatePickerAdapter(getContext(),
-                selectedColor,
-                selectedTextColor,
-                baseColor,
-                baseTextColor, this);
         mMonthRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -135,7 +126,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * e.g. 00/01/2016
      */
     public Date getSelectedDate(){
-        LocalDate selectedLocalDate =  adapter.getDate();
+        LocalDate selectedLocalDate =  new LocalDate();
         return selectedLocalDate.toDate();
 
     }
@@ -146,7 +137,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * e.g. "00/01/2016"
      */
     public String getSelectedDateAsString(){
-        LocalDate selectedLocalDate =  adapter.getDate();
+        LocalDate selectedLocalDate =   new LocalDate();
         return selectedLocalDate.toString("dd/MM/yyyy");
     }
 
@@ -156,7 +147,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * @return selected month name as String
      */
     public String getSelectedMonthName(){
-        LocalDate selectedLocalDate =  adapter.getDate();
+        LocalDate selectedLocalDate =   new LocalDate();
         return selectedLocalDate.toString("MMMM");
     }
 
@@ -166,7 +157,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * @return selected month short name as String
      */
     public String getSelectedMonthNameShort(){
-        LocalDate selectedLocalDate =  adapter.getDate();
+        LocalDate selectedLocalDate =   new LocalDate();
         return selectedLocalDate.toString("MMM");
     }
 
@@ -205,8 +196,5 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
         mYearTextView.setText(date.toString("yyyy"));
     }
 
-    @Override
-    public void onFullDateInteraction(LocalDate date) {
-        mFullDateTextView.setText((date.toString("MMMM") + " " + date.toString("yyyy")));
-    }
+
 }
