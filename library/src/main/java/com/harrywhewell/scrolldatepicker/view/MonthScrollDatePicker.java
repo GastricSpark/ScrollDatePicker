@@ -2,6 +2,7 @@ package com.harrywhewell.scrolldatepicker.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.adapter.MonthScrollDatePickerAdapter;
+import com.harrywhewell.scrolldatepicker.model.Style;
+import com.harrywhewell.scrolldatepicker.util.Util;
 
 import org.joda.time.LocalDate;
 
@@ -34,6 +37,8 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
 
     private boolean showTitle;
     private boolean showFullDate;
+
+    private Style style;
 
     public MonthScrollDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,14 +63,31 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * @param a styled attributes
      */
     private void setAttributeValues(TypedArray a){
+        int baseColor;
+        int selectedTextColor;
+        int selectedColor;
         try{
-            adapter = new MonthScrollDatePickerAdapter(getContext(), a, this);
-            baseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor, getResources().getColor(R.color.default_base_text));
+            baseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor,
+                    getResources().getColor(R.color.default_base_text));
+            baseColor = a.getColor(R.styleable.ScrollDatePicker_baseColor,
+                    getResources().getColor(R.color.default_base));
+            selectedTextColor = a.getColor(R.styleable.ScrollDatePicker_selectedTextColor,
+                    getResources().getColor(R.color.default_selected_text));
+            selectedColor = a.getColor(R.styleable.ScrollDatePicker_selectedColor,
+                    getResources().getColor(R.color.default_selected));
+
             showTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
             showFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
+
         } finally {
             a.recycle();
         }
+
+        Drawable background = Util.setDrawableBackgroundColor(
+                getResources().getDrawable(R.drawable.bg_circle_drawable), baseColor);
+        Drawable selectedBackground = Util.setDrawableBackgroundColor(
+                getResources().getDrawable(R.drawable.bg_circle_drawable), selectedColor);
+        style = new Style(selectedColor, baseColor, selectedTextColor, baseTextColor, background, selectedBackground);
     }
 
     /**
@@ -82,6 +104,7 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
+        adapter = new MonthScrollDatePickerAdapter(style, this);
         mMonthRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
