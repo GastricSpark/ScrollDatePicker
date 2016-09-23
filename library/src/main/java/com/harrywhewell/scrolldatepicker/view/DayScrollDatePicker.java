@@ -109,7 +109,7 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
-        adapter = new DayScrollDatePickerAdapter();
+        adapter = new DayScrollDatePickerAdapter(style, this);
         mDayRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -155,7 +155,7 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
      * @param year start year
      */
     public void setStartDate(int day, int month, int year){
-
+        adapter.setStartDate(day, month, year);
     }
 
     /**
@@ -165,7 +165,7 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
      * @param year start year
      */
     public void setEndDate(int day, int month, int year){
-
+        adapter.setEndDate(day, month, year);
     }
 
     /**
