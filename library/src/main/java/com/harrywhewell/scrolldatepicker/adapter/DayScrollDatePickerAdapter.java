@@ -7,6 +7,7 @@ import com.harrywhewell.scrolldatepicker.holder.DayScrollDatePickerViewHolder;
 
 public class DayScrollDatePickerAdapter extends RecyclerView.Adapter<DayScrollDatePickerViewHolder>{
 
+
     @Override
     public DayScrollDatePickerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
@@ -19,6 +20,6 @@ public class DayScrollDatePickerAdapter extends RecyclerView.Adapter<DayScrollDa
 
     @Override
     public int getItemCount() {
-        return 0;
+        return Integer.MAX_VALUE;
     }
 }
