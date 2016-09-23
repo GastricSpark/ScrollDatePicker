@@ -152,7 +152,6 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
 
     /**
      * Gets the current selected date as a Date.
-     * e.g. 00/01/2016
      */
     public void getSelectedDate(OnDateSelectedListener listener){
        this.listener = listener;
