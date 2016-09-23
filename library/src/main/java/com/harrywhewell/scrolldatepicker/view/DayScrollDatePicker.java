@@ -4,6 +4,7 @@ package com.harrywhewell.scrolldatepicker.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -11,16 +12,22 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.harrywhewell.scrolldatepicker.Interfaces.OnChildDateSelectedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.OnDateSelectedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.TitleValueCallback;
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.adapter.DayScrollDatePickerAdapter;
+import com.harrywhewell.scrolldatepicker.holder.DayScrollDatePickerViewHolder;
 import com.harrywhewell.scrolldatepicker.model.Style;
 import com.harrywhewell.scrolldatepicker.util.Util;
+
+import org.joda.time.LocalDate;
 
 /**
  * Date picker which displays the days of the month in a horizontal list.
  * If no end date is set the date picker will continue to infinity.
  */
-public class DayScrollDatePicker  extends LinearLayout {
+public class DayScrollDatePicker  extends LinearLayout implements TitleValueCallback, OnChildDateSelectedListener {
 
     private TextView mMonthTextView;
     private TextView mFullDateTextView;
@@ -33,6 +40,8 @@ public class DayScrollDatePicker  extends LinearLayout {
     private boolean showTitle;
     private boolean showFullDate;
 
+    private OnDateSelectedListener listener;
+
     private Style style;
 
     public DayScrollDatePicker(Context context, AttributeSet attrs) {
@@ -40,6 +49,7 @@ public class DayScrollDatePicker  extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.date_picker_scroll_day, this, true);
         getViewElements();
         setAttributeValues(context.getTheme().obtainStyledAttributes(attrs, R.styleable.ScrollDatePicker, 0, 0));
+        DayScrollDatePickerViewHolder.onDateSelected(this);
         initView();
     }
 
@@ -161,8 +171,22 @@ public class DayScrollDatePicker  extends LinearLayout {
     /**
      * Gets the current selected date as a Date.
      */
-    public void getSelectedDate(){
-
+    public void getSelectedDate(OnDateSelectedListener listener){
+        this.listener = listener;
     }
 
+
+    @Override
+    public void onDateSelectedChild(@Nullable LocalDate date) {
+        if(date != null) {
+            mFullDateTextView.setText(String.format("%s %s %s", date.toString("dd"),
+                    date.toString("MMMM"), date.toString("yyyy")));
+            listener.onDateSelected(date.toDate());
+        }
+    }
+
+    @Override
+    public void onTitleValueReturned(LocalDate date) {
+        mMonthTextView.setText(date.toString("MMMM"));
+    }
 }

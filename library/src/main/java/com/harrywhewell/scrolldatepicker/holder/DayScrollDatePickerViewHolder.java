@@ -59,7 +59,7 @@ public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
         Log.d("LOG", value.toString());
 
         styleViewSection(false);
-        dayNameTextView.setText(value.toString("DDD"));
+        dayNameTextView.setText(value.toString("ddd"));
         dayValueTextView.setText(value.toString("dd"));
 
 

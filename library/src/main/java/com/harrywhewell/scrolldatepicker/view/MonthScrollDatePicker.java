@@ -195,7 +195,7 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
     @Override
     public void onDateSelectedChild(@Nullable LocalDate date) {
         if(date != null) {
-            mFullDateTextView.setText(String.format("%s %s", date.toString("MMMM"), date.toString("YYYY")));
+            mFullDateTextView.setText(String.format("%s %s", date.toString("MMMM"), date.toString("yyyy")));
             listener.onDateSelected(date.toDate());
         }
     }
