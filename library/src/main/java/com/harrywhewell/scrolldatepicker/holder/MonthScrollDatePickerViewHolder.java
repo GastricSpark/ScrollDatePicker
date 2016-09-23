@@ -1,16 +1,13 @@
 package com.harrywhewell.scrolldatepicker.holder;
 
-
-
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.harrywhewell.scrolldatepicker.Interfaces.OnChildClickedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.OnChildDateSelectedListener;
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.model.Style;
 
@@ -28,13 +25,16 @@ public class MonthScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
     private Drawable selectedBackground;
     private Drawable background;
 
-    private LocalDate value;
-    public int positon = getAdapterPosition();
+    private OnChildClickedListener clickedListener;
+    private static OnChildDateSelectedListener dateSelectedListener;
+
 
     public MonthScrollDatePickerViewHolder(Style style, View itemView) {
         super(itemView);
         monthTextView = (TextView) itemView.findViewById(R.id.month_list_item_name);
         init(style);
+        dateSelectedListener.onDateSelectedChild(null);
+
     }
 
     private void init(Style style){
@@ -44,20 +44,34 @@ public class MonthScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
         background = style.getBackground();
     }
 
-    public void handleViewSelection(boolean selected){
+    public void styleViewSection(boolean selected){
         monthTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
         monthTextView.setBackground(selected ? selectedBackground : background);
 
     }
 
-    public void onBind(LocalDate value){
-        this.value = value;
+    public static void onDateSelected(OnChildDateSelectedListener listener){
+        dateSelectedListener = listener;
+    }
+
+    public void onBind(final LocalDate value, OnChildClickedListener listener){
+        this.clickedListener = listener;
+        clickedListener.onChildClick(false);
+
         Log.d("LOG", value.toString());
 
-        monthTextView.setTextColor(baseTextColor);
-        monthTextView.setBackground(background);
+        styleViewSection(false);
         monthTextView.setText(value.toString("MMM"));
 
+
+        monthTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                styleViewSection(true);
+                clickedListener.onChildClick(true);
+                dateSelectedListener.onDateSelectedChild(value);
+            }
+        });
     }
 
 }

@@ -1,6 +1,5 @@
 package com.harrywhewell.scrolldatepicker.adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -8,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.harrywhewell.scrolldatepicker.Interfaces.OnChildClickedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.TitleValueCallback;
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.holder.MonthScrollDatePickerViewHolder;
 import com.harrywhewell.scrolldatepicker.model.Style;
@@ -23,28 +24,29 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private OnYearInteractionListener listener;
+    private TitleValueCallback callback;
+
 
     private Style style;
 
     private Integer selectedPosition = null;
 
 
-    public MonthScrollDatePickerAdapter(Style style, OnYearInteractionListener listener) {
-        this.listener = listener;
+    public MonthScrollDatePickerAdapter(Style style, TitleValueCallback callback) {
+        this.callback = callback;
         this.startDate = new LocalDate();
         this.style = style;
-        listener.onYearInteraction(startDate);
+        callback.onTitleValueReturned(startDate);
     }
 
     public void setStartDate(int month, int year){
         this.startDate = startDate.withMonthOfYear(month).withYear(year);
-        listener.onYearInteraction(startDate);
+        callback.onTitleValueReturned(startDate);
     }
 
     public void setStartMonth(int month){
         this.startDate = startDate.withMonthOfYear(month);
-        listener.onYearInteraction(startDate);
+        callback.onTitleValueReturned(startDate);
     }
 
     public void setEndDate(int month, int year){
@@ -61,23 +63,23 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
 
     @Override
     public void onBindViewHolder(final MonthScrollDatePickerViewHolder holder, final int position) {
+        callback.onTitleValueReturned(startDate);
+
         LocalDate dateTime = startDate.plusMonths(position);
-        holder.onBind(dateTime);
-        listener.onYearInteraction(dateTime);
-        holder.handleViewSelection(false);
-
-        holder.monthTextView.setOnClickListener(new View.OnClickListener() {
+        holder.onBind(dateTime, new OnChildClickedListener() {
             @Override
-            public void onClick(View view) {
-                if(selectedPosition != null){
-                    notifyItemChanged(selectedPosition);
+            public void onChildClick(boolean clicked) {
+                if(clicked){
+                    if(selectedPosition != null){
+                        notifyItemChanged(selectedPosition);
+                    }
+                    selectedPosition = holder.getAdapterPosition();
                 }
-                holder.handleViewSelection(true);
-                selectedPosition = holder.getAdapterPosition();
-
-
             }
         });
+        if(selectedPosition != null && selectedPosition == holder.getAdapterPosition()){
+            holder.styleViewSection(true);
+        }
     }
 
     @Override
@@ -88,15 +90,6 @@ public class MonthScrollDatePickerAdapter extends RecyclerView.Adapter<MonthScro
             return Integer.MAX_VALUE;
         }
 
-    }
-
-    public interface OnYearInteractionListener{
-        void onYearInteraction(LocalDate date);
-    }
-
-    //TODO implement onFullDateInteraction
-    public interface OnFullDateInteractionListener{
-        void onFullDateInteraction(LocalDate date);
     }
 
 }

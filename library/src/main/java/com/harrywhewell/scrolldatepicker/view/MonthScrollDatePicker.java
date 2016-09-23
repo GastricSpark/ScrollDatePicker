@@ -3,17 +3,20 @@ package com.harrywhewell.scrolldatepicker.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.harrywhewell.scrolldatepicker.Interfaces.OnChildDateSelectedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.OnDateSelectedListener;
+import com.harrywhewell.scrolldatepicker.Interfaces.TitleValueCallback;
 import com.harrywhewell.scrolldatepicker.R;
 import com.harrywhewell.scrolldatepicker.adapter.MonthScrollDatePickerAdapter;
+import com.harrywhewell.scrolldatepicker.holder.MonthScrollDatePickerViewHolder;
 import com.harrywhewell.scrolldatepicker.model.Style;
 import com.harrywhewell.scrolldatepicker.util.Util;
 
@@ -21,11 +24,12 @@ import org.joda.time.LocalDate;
 
 import java.util.Date;
 
+
 /**
  * Date picker which displays the months of the year in a horizontal list.
  * If no end date is set the date picker will continue to infinity.
  */
-public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDatePickerAdapter.OnYearInteractionListener{
+public class MonthScrollDatePicker extends LinearLayout implements TitleValueCallback, OnChildDateSelectedListener {
 
     private TextView mYearTextView;
     private TextView mFullDateTextView;
@@ -40,11 +44,14 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
 
     private Style style;
 
+    private OnDateSelectedListener listener;
+
     public MonthScrollDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.date_picker_scroll_month, this, true);
         getViewElements();
         setAttributeValues(context.getTheme().obtainStyledAttributes(attrs, R.styleable.ScrollDatePicker, 0, 0));
+        MonthScrollDatePickerViewHolder.onDateSelected(this);
         initView();
     }
 
@@ -145,43 +152,10 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
 
     /**
      * Gets the current selected date as a Date.
-     * @return selected Date
      * e.g. 00/01/2016
      */
-    public Date getSelectedDate(){
-        LocalDate selectedLocalDate =  new LocalDate();
-        return selectedLocalDate.toDate();
-
-    }
-
-    /**
-     * Gets the current selected date value as a String.
-     * @return selected date as a String
-     * e.g. "00/01/2016"
-     */
-    public String getSelectedDateAsString(){
-        LocalDate selectedLocalDate =   new LocalDate();
-        return selectedLocalDate.toString("dd/MM/yyyy");
-    }
-
-    /**
-     * Gets the current selected month name as a String.
-     * e.g. "January"
-     * @return selected month name as String
-     */
-    public String getSelectedMonthName(){
-        LocalDate selectedLocalDate =   new LocalDate();
-        return selectedLocalDate.toString("MMMM");
-    }
-
-    /**
-     * Gets the current selected month short name as a String.
-     * e.g. "Jan"
-     * @return selected month short name as String
-     */
-    public String getSelectedMonthNameShort(){
-        LocalDate selectedLocalDate =   new LocalDate();
-        return selectedLocalDate.toString("MMM");
+    public void getSelectedDate(OnDateSelectedListener listener){
+       this.listener = listener;
     }
 
     /**
@@ -215,9 +189,15 @@ public class MonthScrollDatePicker extends LinearLayout implements MonthScrollDa
     }
 
     @Override
-    public void onYearInteraction(LocalDate date) {
+    public void onTitleValueReturned(LocalDate date) {
         mYearTextView.setText(date.toString("yyyy"));
     }
 
-
+    @Override
+    public void onDateSelectedChild(@Nullable LocalDate date) {
+        if(date != null) {
+            mFullDateTextView.setText(String.format("%s %s", date.toString("MMMM"), date.toString("YYYY")));
+            listener.onDateSelected(date.toDate());
+        }
+    }
 }
