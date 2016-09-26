@@ -11,15 +11,6 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.harrywhewell.scrolldatepicker.OnChildDateSelectedListener;
-import com.harrywhewell.scrolldatepicker.OnDateSelectedListener;
-import com.harrywhewell.scrolldatepicker.TitleValueCallback;
-import com.harrywhewell.scrolldatepicker.R;
-import com.harrywhewell.scrolldatepicker.MonthScrollDatePickerAdapter;
-import com.harrywhewell.scrolldatepicker.MonthScrollDatePickerViewHolder;
-import com.harrywhewell.scrolldatepicker.Style;
-import com.harrywhewell.scrolldatepicker.Util;
-
 import org.joda.time.LocalDate;
 
 

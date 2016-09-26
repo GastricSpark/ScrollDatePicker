@@ -1,6 +1,5 @@
 package com.harrywhewell.scrolldatepicker;
 
-
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
