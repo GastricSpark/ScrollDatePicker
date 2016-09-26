@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-N'
+    compileSdkVersion 24
     buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.harrywhewell.scrolldatepicker.sample"
         minSdkVersion 19
-        targetSdkVersion 'N'
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }

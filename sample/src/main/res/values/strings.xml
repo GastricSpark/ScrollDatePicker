@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ScrollDatePicker</string>
+    <string name="month_scroll_date_picker_demo">Month Scroll Date Picker Demo</string>
+    <string name="month_scroll_date_picker">Month Scroll Date Picker</string>
+    <string name="day_scroll_date_picker_demo">Day Scroll Date Picker Demo</string>
+    <string name="day_scroll_date_picker">Day Scroll Date Picker</string>
+    <string name="sample">Scroll Date Picker Sample</string>
 </resources>
