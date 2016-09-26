@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
 
@@ -39,7 +40,7 @@ import org.joda.time.Months;
     @Override
     public DayScrollDatePickerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.month_list_item,
+                R.layout.day_list_item,
                 parent,
                 false);
         return new DayScrollDatePickerViewHolder(style, itemView);
@@ -47,9 +48,9 @@ import org.joda.time.Months;
 
     @Override
     public void onBindViewHolder(final DayScrollDatePickerViewHolder holder, int position) {
-        callback.onTitleValueReturned(startDate);
+        LocalDate dateTime = startDate.plusDays(position);
+        callback.onTitleValueReturned(dateTime);
 
-        LocalDate dateTime = startDate.plusMonths(position);
         holder.onBind(dateTime, new OnChildClickedListener() {
             @Override
             public void onChildClick(boolean clicked) {
@@ -69,7 +70,7 @@ import org.joda.time.Months;
     @Override
     public int getItemCount() {
         if(endDate != null){
-            return Months.monthsBetween(startDate, endDate).getMonths() + 1;
+            return Days.daysBetween(startDate, endDate).getDays() + 1;
         }else{
             return Integer.MAX_VALUE;
         }

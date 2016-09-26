@@ -54,7 +54,7 @@ import org.joda.time.LocalDate;
         Log.d("LOG", value.toString());
 
         styleViewSection(false);
-        dayNameTextView.setText(value.toString("ddd"));
+        dayNameTextView.setText(value.toString("EEE"));
         dayValueTextView.setText(value.toString("dd"));
 
 

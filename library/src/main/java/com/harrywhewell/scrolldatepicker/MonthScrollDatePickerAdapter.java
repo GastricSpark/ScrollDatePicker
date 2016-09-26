@@ -56,9 +56,9 @@ import org.joda.time.Months;
 
     @Override
     public void onBindViewHolder(final MonthScrollDatePickerViewHolder holder, final int position) {
-        callback.onTitleValueReturned(startDate);
-
         LocalDate dateTime = startDate.plusMonths(position);
+        callback.onTitleValueReturned(dateTime);
+
         holder.onBind(dateTime, new OnChildClickedListener() {
             @Override
             public void onChildClick(boolean clicked) {

@@ -24,16 +24,16 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
     private TextView mFullDateTextView;
     private RecyclerView mMonthRecyclerView;
 
-    private MonthScrollDatePickerAdapter adapter;
+    private MonthScrollDatePickerAdapter mAdapter;
 
-    private int baseTextColor;
+    private int mBaseTextColor;
 
-    private boolean showTitle;
-    private boolean showFullDate;
+    private boolean mShowTitle;
+    private boolean mShowFullDate;
 
-    private Style style;
+    private Style mStyle;
 
-    private OnDateSelectedListener listener;
+    private OnDateSelectedListener mListener;
 
     public MonthScrollDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -63,7 +63,7 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
         int selectedTextColor;
         int selectedColor;
         try{
-            baseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor,
+            mBaseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor,
                     getResources().getColor(R.color.default_base_text));
             baseColor = a.getColor(R.styleable.ScrollDatePicker_baseColor,
                     getResources().getColor(R.color.default_base));
@@ -72,8 +72,8 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
             selectedColor = a.getColor(R.styleable.ScrollDatePicker_selectedColor,
                     getResources().getColor(R.color.default_selected));
 
-            showTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
-            showFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
+            mShowTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
+            mShowFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
 
         } finally {
             a.recycle();
@@ -83,15 +83,15 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
                 getResources().getDrawable(R.drawable.bg_circle_drawable), baseColor);
         Drawable selectedBackground = Util.setDrawableBackgroundColor(
                 getResources().getDrawable(R.drawable.bg_circle_drawable), selectedColor);
-        style = new Style(selectedColor, baseColor, selectedTextColor, baseTextColor, background, selectedBackground);
+        mStyle = new Style(selectedColor, baseColor, selectedTextColor, mBaseTextColor, background, selectedBackground);
     }
 
     /**
      * Set values onto view elements.
      */
     private void initView(){
-        setShowTitle(this.showTitle);
-        setShowFullDate(this.showFullDate);
+        setShowTitle(this.mShowTitle);
+        setShowFullDate(this.mShowFullDate);
         setTextColor();
         initRecyclerView();
     }
@@ -100,8 +100,8 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
-        adapter = new MonthScrollDatePickerAdapter(style, this);
-        mMonthRecyclerView.setAdapter(adapter);
+        mAdapter = new MonthScrollDatePickerAdapter(mStyle, this);
+        mMonthRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mMonthRecyclerView.setLayoutManager(layoutManager);
@@ -135,45 +135,45 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
      * Sets the text color of full date and title.
      */
     private void setTextColor(){
-        mYearTextView.setTextColor(baseTextColor);
-        mFullDateTextView.setTextColor(baseTextColor);
+        mYearTextView.setTextColor(mBaseTextColor);
+        mFullDateTextView.setTextColor(mBaseTextColor);
     }
 
     /**
      * Gets the current selected date as a Date.
      */
     public void getSelectedDate(OnDateSelectedListener listener){
-       this.listener = listener;
+       this.mListener = listener;
     }
 
     /**
      * Sets the start month on the MonthScrollDatePicker.
      * Presumes year as local.
-     * @param month start month
+     * @param month start month e.g. 10
      */
     public void setStartMonth(int month){
-        adapter.setStartMonth(month);
-        adapter.notifyDataSetChanged();
+        mAdapter.setStartMonth(month);
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
      * Sets the start date on the MonthScrollDatePicker
-     * @param month start month
-     * @param year start year
+     * @param month start month e.g. 10
+     * @param year start year e.g. 2016
      */
     public void setStartDate(int month, int year){
-        adapter.setStartDate(month, year);
-        adapter.notifyDataSetChanged();
+        mAdapter.setStartDate(month, year);
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
      * Sets the end date of the MonthScrollDatePicker.
-     * @param month end month
-     * @param year end year
+     * @param month end month e.g. 10
+     * @param year end year e.g. 2016
      */
     public void setEndDate(int month, int year){
-        adapter.setEndDate(month, year);
-        adapter.notifyDataSetChanged();
+        mAdapter.setEndDate(month, year);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -185,7 +185,7 @@ public class MonthScrollDatePicker extends LinearLayout implements TitleValueCal
     public void onDateSelectedChild(@Nullable LocalDate date) {
         if(date != null) {
             mFullDateTextView.setText(String.format("%s %s", date.toString("MMMM"), date.toString("yyyy")));
-            listener.onDateSelected(date.toDate());
+            mListener.onDateSelected(date.toDate());
         }
     }
 }

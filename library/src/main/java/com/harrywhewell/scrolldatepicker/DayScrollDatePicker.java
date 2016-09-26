@@ -24,16 +24,16 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
     private TextView mFullDateTextView;
     private RecyclerView mDayRecyclerView;
 
-    private int baseTextColor;
+    private int mBaseTextColor;
 
-    private DayScrollDatePickerAdapter adapter;
+    private DayScrollDatePickerAdapter mAdapter;
 
-    private boolean showTitle;
-    private boolean showFullDate;
+    private boolean mShowTitle;
+    private boolean mShowFullDate;
 
-    private OnDateSelectedListener listener;
+    private OnDateSelectedListener mListener;
 
-    private Style style;
+    private Style mStyle;
 
     public DayScrollDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -63,7 +63,7 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
         int selectedTextColor;
         int selectedColor;
         try{
-            baseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor,
+            mBaseTextColor = a.getColor(R.styleable.ScrollDatePicker_baseTextColor,
                     getResources().getColor(R.color.default_base_text));
             baseColor = a.getColor(R.styleable.ScrollDatePicker_baseColor,
                     getResources().getColor(R.color.default_base));
@@ -72,8 +72,8 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
             selectedColor = a.getColor(R.styleable.ScrollDatePicker_selectedColor,
                     getResources().getColor(R.color.default_selected));
 
-            showTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
-            showFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
+            mShowTitle = a.getBoolean(R.styleable.ScrollDatePicker_showTitle, true);
+            mShowFullDate = a.getBoolean(R.styleable.ScrollDatePicker_showFullDate, true);
 
         } finally {
             a.recycle();
@@ -83,15 +83,15 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
                 getResources().getDrawable(R.drawable.bg_circle_drawable), baseColor);
         Drawable selectedBackground = Util.setDrawableBackgroundColor(
                 getResources().getDrawable(R.drawable.bg_circle_drawable), selectedColor);
-        style = new Style(selectedColor, baseColor, selectedTextColor, baseTextColor, background, selectedBackground);
+        mStyle = new Style(selectedColor, baseColor, selectedTextColor, mBaseTextColor, background, selectedBackground);
     }
 
     /**
      * Set values onto view elements.
      */
     private void initView(){
-        setShowTitle(this.showTitle);
-        setShowFullDate(this.showFullDate);
+        setShowTitle(this.mShowTitle);
+        setShowFullDate(this.mShowFullDate);
         setTextColor();
         initRecyclerView();
     }
@@ -100,8 +100,8 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
      * set up Recycler view and its adapter
      */
     private void initRecyclerView(){
-        adapter = new DayScrollDatePickerAdapter(style, this);
-        mDayRecyclerView.setAdapter(adapter);
+        mAdapter = new DayScrollDatePickerAdapter(mStyle, this);
+        mDayRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mDayRecyclerView.setLayoutManager(layoutManager);
@@ -135,35 +135,37 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
      * Sets the text color of full date and title.
      */
     private void setTextColor(){
-        mMonthTextView.setTextColor(baseTextColor);
-        mFullDateTextView.setTextColor(baseTextColor);
+        mMonthTextView.setTextColor(mBaseTextColor);
+        mFullDateTextView.setTextColor(mBaseTextColor);
     }
 
     /**
      * Sets the start date on the DayScrollPicker
-     * @param day start day
-     * @param month start month
-     * @param year start year
+     * @param day start day e.g. 28
+     * @param month start month e.g. 10
+     * @param year start year e.g. 2010
      */
     public void setStartDate(int day, int month, int year){
-        adapter.setStartDate(day, month, year);
+        mAdapter.setStartDate(day, month, year);
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
      * Sets the end date on the DayScrollPicker
-     * @param day start day
-     * @param month start month
-     * @param year start year
+     * @param day start day e.g. 28
+     * @param month start month e.g. 10
+     * @param year start year e.g. 2010
      */
     public void setEndDate(int day, int month, int year){
-        adapter.setEndDate(day, month, year);
+        mAdapter.setEndDate(day, month, year);
+        mAdapter.notifyDataSetChanged();;
     }
 
     /**
      * Gets the current selected date as a Date.
      */
     public void getSelectedDate(OnDateSelectedListener listener){
-        this.listener = listener;
+        this.mListener = listener;
     }
 
 
@@ -172,7 +174,7 @@ public class DayScrollDatePicker  extends LinearLayout implements TitleValueCall
         if(date != null) {
             mFullDateTextView.setText(String.format("%s %s %s", date.toString("dd"),
                     date.toString("MMMM"), date.toString("yyyy")));
-            listener.onDateSelected(date.toDate());
+            mListener.onDateSelected(date.toDate());
         }
     }
 
