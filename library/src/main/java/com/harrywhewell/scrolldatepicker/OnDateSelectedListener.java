@@ -1,4 +1,4 @@
-package com.harrywhewell.scrolldatepicker.Interfaces;
+package com.harrywhewell.scrolldatepicker;
 
 import android.support.annotation.Nullable;
 

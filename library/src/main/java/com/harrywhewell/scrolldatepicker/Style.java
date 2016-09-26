@@ -1,8 +1,8 @@
-package com.harrywhewell.scrolldatepicker.model;
+package com.harrywhewell.scrolldatepicker;
 
 import android.graphics.drawable.Drawable;
 
-public class Style {
+ class Style {
     private int selectedColor;
     private int baseColor;
     private int selectedTextColor;

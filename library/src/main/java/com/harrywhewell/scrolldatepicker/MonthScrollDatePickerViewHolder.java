@@ -1,4 +1,4 @@
-package com.harrywhewell.scrolldatepicker.holder;
+package com.harrywhewell.scrolldatepicker;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -6,17 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.harrywhewell.scrolldatepicker.Interfaces.OnChildClickedListener;
-import com.harrywhewell.scrolldatepicker.Interfaces.OnChildDateSelectedListener;
-import com.harrywhewell.scrolldatepicker.R;
-import com.harrywhewell.scrolldatepicker.model.Style;
-
 import org.joda.time.LocalDate;
 
-public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
+/**
+ *  ViewHolder for month_list_item layout
+ */
+ class MonthScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
 
-    public TextView dayNameTextView;
-    public TextView dayValueTextView;
+    public TextView monthTextView;
 
     private int selectedTextColor;
     private int baseTextColor;
@@ -26,12 +23,13 @@ public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
     private OnChildClickedListener clickedListener;
     private static OnChildDateSelectedListener dateSelectedListener;
 
-    public DayScrollDatePickerViewHolder(Style style, View itemView) {
+
+    public MonthScrollDatePickerViewHolder(Style style, View itemView) {
         super(itemView);
-        dayNameTextView = (TextView) itemView.findViewById(R.id.day_name);
-        dayValueTextView = (TextView) itemView.findViewById(R.id.day_value);
+        monthTextView = (TextView) itemView.findViewById(R.id.month_list_item_name);
         init(style);
         dateSelectedListener.onDateSelectedChild(null);
+
     }
 
     private void init(Style style){
@@ -42,9 +40,8 @@ public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void styleViewSection(boolean selected){
-        dayNameTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
-        dayValueTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
-        dayValueTextView.setBackground(selected ? selectedBackground : background);
+        monthTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
+        monthTextView.setBackground(selected ? selectedBackground : background);
 
     }
 
@@ -59,11 +56,10 @@ public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
         Log.d("LOG", value.toString());
 
         styleViewSection(false);
-        dayNameTextView.setText(value.toString("ddd"));
-        dayValueTextView.setText(value.toString("dd"));
+        monthTextView.setText(value.toString("MMM"));
 
 
-        dayValueTextView.setOnClickListener(new View.OnClickListener() {
+        monthTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 styleViewSection(true);
@@ -72,4 +68,5 @@ public class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
             }
         });
     }
+
 }

@@ -1,20 +1,14 @@
-package com.harrywhewell.scrolldatepicker.adapter;
+package com.harrywhewell.scrolldatepicker;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.harrywhewell.scrolldatepicker.Interfaces.OnChildClickedListener;
-import com.harrywhewell.scrolldatepicker.Interfaces.TitleValueCallback;
-import com.harrywhewell.scrolldatepicker.R;
-import com.harrywhewell.scrolldatepicker.holder.DayScrollDatePickerViewHolder;
-import com.harrywhewell.scrolldatepicker.model.Style;
-
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
 
-public class DayScrollDatePickerAdapter extends RecyclerView.Adapter<DayScrollDatePickerViewHolder>{
+ class DayScrollDatePickerAdapter extends RecyclerView.Adapter<DayScrollDatePickerViewHolder>{
 
     private LocalDate startDate;
     private LocalDate endDate;
