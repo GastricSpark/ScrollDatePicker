@@ -8,13 +8,14 @@ import android.widget.TextView;
 
 import org.joda.time.LocalDate;
 
- class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
+class DayScrollDatePickerViewHolder extends RecyclerView.ViewHolder{
 
     public TextView dayNameTextView;
     public TextView dayValueTextView;
 
     private int selectedTextColor;
     private int baseTextColor;
+    private int selectedColor;
     private Drawable selectedBackground;
     private Drawable background;
 
@@ -34,10 +35,11 @@ import org.joda.time.LocalDate;
         baseTextColor = style.getBaseTextColor();
         selectedBackground = style.getSelectedBackground();
         background = style.getBackground();
+        selectedColor = style.getSelectedColor();
     }
 
     public void styleViewSection(boolean selected){
-        dayNameTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
+        dayNameTextView.setTextColor(selected ? selectedColor : baseTextColor);
         dayValueTextView.setTextColor(selected ? selectedTextColor : baseTextColor);
         dayValueTextView.setBackground(selected ? selectedBackground : background);
 
