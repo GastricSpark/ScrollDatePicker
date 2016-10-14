@@ -3,7 +3,7 @@
   A custom horizontally scrolling date picker for Android.
 </p>
 <p align="center">
-  <img src="https://img.shields.io/badge/maven--central-v0.0.1-blue.svg" alt="On Maven Central: Version 1.0.1">
+  <img src="https://img.shields.io/badge/maven--central-v1.0.1-blue.svg" alt="On Maven Central: Version 1.0.1">
   <img src="https://img.shields.io/badge/platform-android-brightgreen.svg" alt="Platform: Android">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey.svg" alt="License: MIT">
 </p>
