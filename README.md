@@ -23,7 +23,7 @@
 ## Installation
 Install by adding the library to your module's `build.gradle` file.
 ``` gradle
-compile 'com.github.gastricspark:scrolldatepicker:1.0.1'
+compile 'com.github.gastricspark:scrolldatepicker:0.0.1'
 ```
 
 ## Usage
